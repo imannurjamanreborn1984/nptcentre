@@ -5,6 +5,18 @@ import { DEFAULT_JOURNALS } from '../data/defaultJournals';
 
 export type ColorTheme = 'merah-putih' | 'emas-hikmah' | 'emerald-hikam' | 'indigo-kosmik';
 
+export interface MemberProfile {
+  id: string;
+  full_name: string;
+  email?: string;
+  phone_number?: string;
+  role: 'member' | 'vip' | 'super_admin';
+  status: 'pending' | 'approved';
+  created_at: string;
+  approved_at?: string;
+  approved_by?: string;
+}
+
 export interface ApprovalItem {
   id: string;
   rootId?: string;
@@ -27,8 +39,39 @@ const STORAGE_KEYS = {
   USER_NOTES: 'buku_saku_user_notes_v1',
   THEME_COLOR: 'buku_saku_color_theme_v1',
   APPROVALS: 'buku_saku_approvals_v1',
+  MEMBERS: 'buku_saku_members_v1',
   ACTIVE_ACCOUNT: 'buku_saku_active_account_v1',
 };
+
+const DEFAULT_MEMBERS: MemberProfile[] = [
+  {
+    id: 'mem-01',
+    full_name: 'Ahmad Fauzi',
+    email: 'ahmad.fauzi@gmail.com',
+    phone_number: '6281234567890',
+    role: 'member',
+    status: 'pending',
+    created_at: '2026-08-31T08:30:00Z',
+  },
+  {
+    id: 'mem-02',
+    full_name: 'Siti Rahmawati',
+    email: 'siti.rahma@gmail.com',
+    phone_number: '6285712345678',
+    role: 'member',
+    status: 'pending',
+    created_at: '2026-08-31T14:15:00Z',
+  },
+  {
+    id: 'mem-03',
+    full_name: 'Kang Iman (Admin)',
+    email: 'imannurjamanreborn@gmail.com',
+    phone_number: '6281320000000',
+    role: 'super_admin',
+    status: 'approved',
+    created_at: '2026-08-01T00:00:00Z',
+  },
+];
 
 const DEFAULT_APPROVAL_ITEMS: ApprovalItem[] = [
   {
@@ -79,6 +122,75 @@ export const DataService = {
 
   setColorTheme(theme: ColorTheme): void {
     localStorage.setItem(STORAGE_KEYS.THEME_COLOR, theme);
+  },
+
+  // --- MEMBERSHIP & MEMBER APPROVAL MANAGEMENT ---
+  getMembers(): MemberProfile[] {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEYS.MEMBERS);
+      if (!stored) {
+        localStorage.setItem(STORAGE_KEYS.MEMBERS, JSON.stringify(DEFAULT_MEMBERS));
+        return DEFAULT_MEMBERS;
+      }
+      return JSON.parse(stored);
+    } catch (e) {
+      console.error('Error reading members:', e);
+      return DEFAULT_MEMBERS;
+    }
+  },
+
+  /**
+   * Strictly isolates member approval by member ID
+   */
+  updateMemberStatus(memberId: string, status: 'pending' | 'approved', adminName: string): boolean {
+    try {
+      const members = this.getMembers();
+      const targetIndex = members.findIndex((m) => m.id === memberId);
+      if (targetIndex === -1) return false;
+
+      // Only update targeted member
+      const updated = members.map((m) => {
+        if (m.id === memberId) {
+          return {
+            ...m,
+            status,
+            approved_by: status === 'approved' ? adminName : undefined,
+            approved_at: status === 'approved' ? new Date().toISOString() : undefined,
+          };
+        }
+        return m;
+      });
+
+      localStorage.setItem(STORAGE_KEYS.MEMBERS, JSON.stringify(updated));
+      return true;
+    } catch (e) {
+      console.error('Error updating member status:', e);
+      return false;
+    }
+  },
+
+  addMember(member: Omit<MemberProfile, 'id' | 'created_at'>): MemberProfile {
+    const members = this.getMembers();
+    const newMember: MemberProfile = {
+      ...member,
+      id: `mem-${Date.now()}`,
+      created_at: new Date().toISOString(),
+    };
+    const updated = [newMember, ...members];
+    localStorage.setItem(STORAGE_KEYS.MEMBERS, JSON.stringify(updated));
+    return newMember;
+  },
+
+  deleteMember(memberId: string): boolean {
+    try {
+      const members = this.getMembers();
+      const updated = members.filter((m) => m.id !== memberId);
+      localStorage.setItem(STORAGE_KEYS.MEMBERS, JSON.stringify(updated));
+      return true;
+    } catch (e) {
+      console.error('Error deleting member:', e);
+      return false;
+    }
   },
 
   // --- ACCOUNT CONTEXT ---
