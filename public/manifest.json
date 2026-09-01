@@ -1,18 +1,37 @@
 {
   "short_name": "Buku Saku NPT",
   "name": "Buku Saku 14 Akar Spiritual & Hakikat Cinta NPT",
-  "icons": [
-    {
-      "src": "/favicon.svg",
-      "type": "image/svg+xml",
-      "sizes": "192x192 512x512",
-      "purpose": "any maskable"
-    }
-  ],
+  "description": "Portal Resmi 14 Akar Spiritual & Hakikat Cinta NPT",
   "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#090d16",
   "theme_color": "#e11d48",
-  "display": "standalone",
-  "orientation": "portrait",
-  "scope": "/"
+  "icons": [
+    {
+      "src": "/iconnpt-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/iconnpt-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/iconnpt-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/iconnpt-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
 }
