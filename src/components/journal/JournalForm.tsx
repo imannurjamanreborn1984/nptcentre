@@ -118,41 +118,7 @@ export const JournalForm: React.FC<JournalFormProps> = ({
           />
         </div>
 
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-            Jenis Latihan
-          </label>
-          <select
-            value={practiceType}
-            onChange={(e) => setPracticeType(e.target.value as PracticeType)}
-            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-xs font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none"
-          >
-            <option value="dynamic_meditation">Dynamic Meditation (Gerak Somatik)</option>
-            <option value="khalwat">Khalwat (Hening & Kontemplasi Mandiri)</option>
-            <option value="refleksi_harian">Refleksi Harian / Muhasabah</option>
-            <option value="observasi_akar">Observasi Dinamika Akar dalam Aktivitas</option>
-          </select>
-        </div>
-      </div>
 
-      {/* Row 2: Target Akar & Durasi */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-            Fokus Akar Spiritual yang Dilatih
-          </label>
-          <select
-            value={targetRootId}
-            onChange={(e) => setTargetRootId(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-xs font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none"
-          >
-            {roots.map((r) => (
-              <option key={r.id} value={r.id}>
-                #{r.number} - {r.name} ({r.element})
-              </option>
-            ))}
-          </select>
-        </div>
 
         <div>
           <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
