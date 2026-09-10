@@ -33,8 +33,8 @@ export const JournalForm: React.FC<JournalFormProps> = ({
   onCancel,
 }) => {
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
-  const [practiceType, setPracticeType] = useState<PracticeType>(initialPracticeType);
-  const [targetRootId, setTargetRootId] = useState<string>(selectedRoot?.id || roots[0]?.id || '');
+  const [practiceType] = useState<PracticeType>(initialPracticeType);
+  const [targetRootId] = useState<string>(selectedRoot?.id || roots[0]?.id || '');
   const [durationMinutes, setDurationMinutes] = useState<number>(initialDuration);
   const [energyLevelBefore, setEnergyLevelBefore] = useState<number>(2);
   const [energyLevelAfter, setEnergyLevelAfter] = useState<number>(4);
