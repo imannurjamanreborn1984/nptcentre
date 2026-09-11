@@ -430,7 +430,11 @@ export const DataService = {
       updated = [newEntry, ...journals];
     }
 
-    localStorage.setItem(STORAGE_KEYS.JOURNALS, JSON.stringify(updated));
+    try {
+      localStorage.setItem(STORAGE_KEYS.JOURNALS, JSON.stringify(updated));
+    } catch (quotaError) {
+      console.warn('LocalStorage limit reached in standalone app:', quotaError);
+    }
     return newEntry;
   },
 
